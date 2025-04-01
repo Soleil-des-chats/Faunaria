@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faunaria - Bot Discord Botanique</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #A5D6A7;
+            --accent: #FF9800;
+            --text-dark: #2E3440;
+            --text-light: #ECEFF4;
+            --bg-light: #F5F7FA;
+            --bg-dark: #2E3440;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-dark);
+        }
+        
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-dark);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: var(--primary);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            flex: 1 1 300px;
+            max-width: 350px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feature-title {
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+        
+        .plants-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .plant-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            flex: 1 1 200px;
+            max-width: 220px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plant-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .plant-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plant-rarity {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .plant-info {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .common {
+            background-color: #FFFDE7;
+        }
+        
+        .uncommon {
+            background-color: #F3E5F5;
+        }
+        
+        .rare {
+            background-color: #E8F5E9;
+        }
+        
+        .very-rare {
+            background-color: #E3F2FD;
+        }
+        
+        .legendary {
+            background: linear-gradient(135deg, #FFD54F, #FF9800);
+            color: white;
+        }
+        
+        .legendary .plant-info {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .badges-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .badge-card {
+            background-color: white;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .badge-title {
+            font-size: 0.85rem;
+            text-align: center;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .badge-info {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .badge-card:hover .badge-info {
+            visibility: visible;
+            opacity: 1;
+            bottom: -70px;
+        }
+        
+        .commands {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .command {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .command:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .command-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .command-example {
+            background-color: #f5f5f5;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-top: 0.5rem;
+        }
+        
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--primary-light);
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .features, .plants-showcase, .badges-showcase {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature-card, .plant-card {
+                max-width: 100%;
+            }
+            
+            .badge-card {
+                margin-bottom: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="background-pattern"></div>
+        <div class="header-content">
+            <div class="logo">🌱 Faunaria 🌱</div>
+            <p class="tagline">Un tamagotchi botanique pour Discord ! Cultivez ensemble un jardin virtuel avec votre communauté.</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1356319983491354887" class="btn btn-primary">Ajouter à Discord</a>
+            <a href="#commands" class="btn">Voir les commandes</a>
+        </div>
+    </header>
+    
+    <section id="about">
+        <h2 class="section-title">Cultivez ensemble</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h3 class="feature-title">Jardinage collaboratif</h3>
+                <p>Plantez, arrosez et entretenez des plantes virtuelles avec tous les membres de votre serveur. Créez une activité commune et engageante !</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-title">Badges et récompenses</h3>
+                <p>Gagnez des badges et des points en prenant soin des plantes. Devenez un jardinier légendaire en débloquant les espèces les plus rares !</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3 class="feature-title">Notifications personnalisées</h3>
+                <p>Recevez des rappels par message privé quand vos plantes ont besoin d'eau. Ne laissez plus jamais dépérir vos précieuses plantes !</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="plants">
+        <h2 class="section-title">Plantes à collectionner</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Débutez avec des tournesols et progressez jusqu'à cultiver des plantes draconiques légendaires !</p>
+        
+        <div class="plants-showcase">
+            <div class="plant-card common">
+                <div class="plant-icon">🌻</div>
+                <h3 class="plant-name">Tournesol</h3>
+                <p class="plant-rarity">Commun</p>
+                <p class="plant-info">Croissance: 3 jours<br>Arrosage: 2 fois/jour<br>Points: 50</p>
+            </div>
+            
+            <div class="plant-card uncommon">
+                <div class="plant-icon">🌹</div>
+                <h3 class="plant-name">Rose</h3>
+                <p class="plant-rarity">Peu commun</p>
+                <p class="plant-info">Croissance: 5 jours<br>Arrosage: 1 fois/jour<br>Points: 100</p>
+            </div>
+            
+            <div class="plant-card rare">
+                <div class="plant-icon">🎍</div>
+                <h3 class="plant-name">Bonsaï</h3>
+                <p class="plant-rarity">Rare</p>
+                <p class="plant-info">Croissance: 14 jours<br>Arrosage: 1 fois/jour<br>Points: 300</p>
+            </div>
+            
+            <div class="plant-card very-rare">
+                <div class="plant-icon">🪷</div>
+                <h3 class="plant-name">Orchidée</h3>
+                <p class="plant-rarity">Très rare</p>
+                <p class="plant-info">Croissance: 21 jours<br>Arrosage: 1 fois/jour<br>Points: 500</p>
+            </div>
+            
+            <div class="plant-card legendary">
+                <div class="plant-icon">🐉</div>
+                <h3 class="plant-name">Plante Draconique</h3>
+                <p class="plant-rarity">Légendaire</p>
+                <p class="plant-info">Croissance: 30 jours<br>Arrosage: 3 fois/jour<br>Points: 1000</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="badges">
+        <h2 class="section-title">Badges à collectionner</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Gagnez des badges en accomplissant des exploits dans votre jardin virtuel !</p>
+        
+        <div class="badges-showcase">
+            <div class="badge-card">
+                <div class="badge-icon">🌱</div>
+                <p class="badge-title">Jardinier Débutant</p>
+                <div class="badge-info">
+                    <h4>Jardinier Débutant</h4>
+                    <p>Obtenu après avoir fait pousser votre première plante.</p>
+                </div>
+            </div>
+            
+            <div class="badge-card">
+                <div class="badge-icon">💧</div>
+                <p class="badge-title">Maître Arroseur</p>
+                <div class="badge-info">
+                    <h4>Maître Arroseur</h4>
+                    <p>Obtenu après avoir arrosé 50 fois les plantes du serveur.</p>
+                </div>
+            </div>
+            
+            <div class="badge-card">
+                <div class="badge-icon">🔬</div>
+                <p class="badge-title">Botaniste</p>
+                <div class="badge-info">
+                    <h4>Botaniste</h4>
+                    <p>Obtenu après avoir fait pousser 5 plantes différentes.</p>
+                </div>
+            </div>
+            
+            <div class="badge-card">
+                <div class="badge-icon">👑</div>
+                <p class="badge-title">Jardinier Légendaire</p>
+                <div class="badge-info">
+                    <h4>Jardinier Légendaire</h4>
+                    <p>Obtenu après avoir fait pousser une Plante Draconique.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="milestones">
+        <h2 class="section-title">Progression du serveur</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Atteignez des jalons pour débloquer de nouvelles espèces rares !</p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎍</div>
+                <h3 class="feature-title">500 points</h3>
+                <p>Débloquez l'accès aux Bonsaïs rares pour tous les membres du serveur.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🪷</div>
+                <h3 class="feature-title">2000 points</h3>
+                <p>Débloquez l'accès aux Orchidées très rares pour tous les membres du serveur.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🐉</div>
+                <h3 class="feature-title">5000 points</h3>
+                <p>Débloquez l'accès aux Plantes Draconiques légendaires pour tous les membres.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="commands">
+        <h2 class="section-title">Commandes du bot</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Utilisez ces commandes pour interagir avec le jardin virtuel sur votre serveur.</p>
+        
+        <div class="commands">
+            <div class="command">
+                <div class="command-name">!jardin aide</div>
+                <p>Affiche la liste des commandes disponibles</p>
+                <div class="command-example">!jardin aide</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin configurer</div>
+                <p>Configure le canal pour les notifications (requiert permission "Gérer le serveur")</p>
+                <div class="command-example">!jardin configurer</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin status</div>
+                <p>Affiche l'état du jardin du serveur</p>
+                <div class="command-example">!jardin status</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin profil</div>
+                <p>Affiche le profil de jardinier de l'utilisateur</p>
+                <div class="command-example">!jardin profil</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin notifs</div>
+                <p>Active/désactive les notifications d'arrosage</p>
+                <div class="command-example">!jardin notifs</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin planter [type]</div>
+                <p>Plante une graine dans le jardin</p>
+                <div class="command-example">!jardin planter tournesol</div>
+            </div>
+            
+            <div class="command">
+                <div class="command-name">!jardin arroser</div>
+                <p>Arrose les plantes qui en ont besoin</p>
+                <div class="command-example">!jardin arroser</div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>🌱 Faunaria 🌱</p>
+        <p>Un tamagotchi botanique pour Discord !</p>
+        <p><small>Créé avec passion par Titimousse 💚</small></p>
+        
+        <div class="footer-links">
+            <a href="https://discord.com/oauth2/authorize?client_id=1356319983491354887">Ajouter à Discord</a>
+            <a href="https://soleil-des-chats.github.io/policies/JardinVirtuel/PrivacyPolicy">Confidentialité</a>
+            <a href="https://soleil-des-chats.github.io/Faunaria/docs/docs.md">Documentation</a>
+        </div>
+    </footer>
+</body>
+</html>
