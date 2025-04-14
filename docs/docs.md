@@ -1,4 +1,4 @@
-# Documentation: Bot Discord "Faunaria"
+# Documentation: Bot Discord "Faunaria" - Version 1.4
 
 ## Présentation Générale
 
@@ -42,6 +42,12 @@ Le serveur gagne des points lorsque les plantes arrivent à maturité. Ces point
 | 5000 points | Déblocage de la Plante Draconique |
 | 7000 points | Déblocage de la Fleur de Lune |
 
+### Gestion des Limites de Plantes
+
+- Limite absolue de 50 plantes par serveur
+- Limite par défaut de 20 plantes par serveur
+- Les administrateurs peuvent ajuster cette limite (jusqu'à 50)
+
 ## Commandes du Bot
 
 Toutes les commandes commencent par le préfixe `!jardin`.
@@ -56,6 +62,7 @@ Toutes les commandes commencent par le préfixe `!jardin`.
 | `profil` ou `profile` | Affiche le profil de jardinier de l'utilisateur | `!jardin profil` |
 | `notifs` ou `notifications` | Active/désactive les notifications d'arrosage | `!jardin notifs` |
 | `statuscanaux` ou `statuschannels` | Configure les canaux de statut pour les informations du jardin | `!jardin statuscanaux activer` |
+| `limite` ou `limit` | Définit la limite de plantes du serveur | `!jardin limite 30` |
 
 ### Commandes de Jardinage
 
@@ -91,4 +98,4 @@ Pour obtenir de l'aide ou contribuer au développement du bot, veuillez:
 
 ---
 
-© 2025 Faunaria - Créé avec 💚 pour les communautés Discord
+© 2025 Faunaria v1.4 - Créé avec 💚 pour les communautés Discord
